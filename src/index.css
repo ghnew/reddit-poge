@@ -9,7 +9,7 @@ main {
 
 *,
 li {
-  font-family: "Source Code Pro";
+  font-family: "Source Code Pro", monospace;
 }
 
 ul {
@@ -68,7 +68,7 @@ body {
 
 .sidebar-list {
   height: 91vh;
-  overflow-x: scroll;
+  overflow-y: auto;
 }
 
 a,
