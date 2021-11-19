@@ -37,7 +37,6 @@ body {
 .loading {
   margin-left: 270px;
   height: 60px;
-  background-color: #eeee;
   display: flex;
   justify-content: center;
   align-items: center;

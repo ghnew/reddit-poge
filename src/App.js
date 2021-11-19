@@ -71,7 +71,9 @@ const App = () => {
         });
     } else {
       if (!selected) return;
-      fetch(`https://www.reddit.com/r/${selected}/.json?after=${after}`)
+      fetch(`https://www.reddit.com/r/${selected}/.json?after=${after}`, {
+        referrerPolicy: "no-referrer",
+      })
         .then((res) => res.json())
         .then((res) => {
           setData((prev) =>
@@ -127,18 +129,18 @@ const App = () => {
     setCur(i);
   };
   const addFavourite = (data) => {
-    console.log(data);
     store.add(data).then(console.log);
+    alert("added to favorites");
   };
   const removeFav = (id, index) => {
-    store
-      .deleteByID(id)
-      .then(() => {
-        if (window.confirm("Are you sure?")) {
+    if (window.confirm("Are you sure?")) {
+      store
+        .deleteByID(id)
+        .then(() => {
           setData(data.filter((data, i) => i !== index));
-        }
-      })
-      .catch(console.error);
+        })
+        .catch(console.error);
+    }
   };
 
   return (
@@ -200,13 +202,13 @@ const App = () => {
                 <i className="fa fa-link"></i>
               </a>
               {tab === Tab.Home && (
-                <a onClick={() => addFavourite(data)} href="/#">
+                <a onClick={() => addFavourite(data)}>
                   {" "}
                   <i className="fa fa-heart"></i>
                 </a>
               )}
               {tab === Tab.Fav && (
-                <a onClick={() => removeFav(data.id, i)} href="/#">
+                <a onClick={() => removeFav(data.id, i)}>
                   {" "}
                   <i className="fa fa-remove"></i>
                 </a>
