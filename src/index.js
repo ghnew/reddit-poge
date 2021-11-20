@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import IndexedDBProvider from "use-indexeddb";
-import "./index.css";
+import "./styles/index.css";
 import App from "./App";
 
 const idbConfig = {
@@ -17,6 +17,7 @@ const idbConfig = {
         { name: "image", keyPath: "image", options: { unique: true } },
         { name: "url", keyPath: "url", options: { unique: true } },
         { name: "subreddit", keyPath: "subreddit" },
+        { name: "type", keyPath: "type" },
       ],
     },
   ],
