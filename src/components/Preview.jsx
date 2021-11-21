@@ -1,10 +1,17 @@
-import { useHotkeys } from "react-hotkeys-hook";
+import { useHotkeys } from 'react-hotkeys-hook';
 
-const Preview = ({ data : { video, image, type }, handleClose, handleRight, handleLeft }) => {
-  useHotkeys("esc", handleClose, [handleClose]);
-  useHotkeys("left", handleLeft, [handleLeft]);
-  useHotkeys("right", handleRight, [handleRight]);
-	
+const Preview = ({
+  data: { video, image, type },
+  handleClose,
+  handleRight,
+  handleLeft,
+  addFavourite
+}) => {
+  useHotkeys('esc', handleClose, [handleClose]);
+  useHotkeys('left', handleLeft, [handleLeft]);
+  useHotkeys('right', handleRight, [handleRight]);
+  useHotkeys('alt+r', addFavourite, [addFavourite]);
+
   return (
     <div className="preview">
       {type === 'video' ? (
@@ -12,9 +19,8 @@ const Preview = ({ data : { video, image, type }, handleClose, handleRight, hand
       ) : (
         <img src={image} alt="" />
       )}
-      <span onClick={handleClose} className="close">
-        &#10005;
-      </span>
+      <i onClick={handleClose} className="fa fa-remove close"></i>
+      <i onClick={addFavourite} className="fa fa-heart heart"></i>
     </div>
   );
 };

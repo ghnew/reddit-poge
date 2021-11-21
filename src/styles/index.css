@@ -174,3 +174,13 @@ code {
   padding: 10px;
   cursor: pointer;
 }
+
+.heart {
+  position: absolute;
+  color: #fff;
+  font-size: 20px;
+  bottom: 0;
+  right: 0;
+  padding: 10px;
+  cursor: pointer;
+}
