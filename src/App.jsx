@@ -2,13 +2,11 @@ import React, { useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import Loader from './components/Loader';
 import Grid from './components/Grid';
-import { useIndexedDBStore } from 'use-indexeddb';
 import { Tab } from './constants';
 import Sidebar from './components/Sidebar';
 import useFetch from './hooks/useFetch';
 
 const App = () => {
-  const store = useIndexedDBStore('favourites');
 
   const [after, setAfter] = useState('');
 
@@ -33,22 +31,6 @@ const App = () => {
   useHotkeys('alt+w', loadMore, [loadMore]);
   useHotkeys('alt+q', switchTab, [switchTab]);
 
-  const addFavourite = data => {
-    store.add(data).then(console.log);
-    alert('added to favorites');
-  };
-
-  const removeFav = (id, index) => {
-    if (window.confirm('Are you sure?')) {
-      store
-        .deleteByID(id)
-        .then(() => {
-          setData(data.filter((_, i) => i !== index));
-        })
-        .catch(console.error);
-    }
-  };
-
   return (
     <main>
       <Sidebar
@@ -59,16 +41,12 @@ const App = () => {
         loadMore={loadMore}
         switchTab={switchTab}
       />
-      {!!data.length && (
-        <Grid
-          data={data}
-          addFavourite={addFavourite}
-          removeFav={removeFav}
-          tab={tab}
-        />
-      )}
+      <Grid
+        data={data}
+        setData={setData}
+        tab={tab}
+      />
       {loading && <Loader />}
-
     </main>
   );
 };
