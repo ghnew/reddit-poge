@@ -7,7 +7,6 @@ import Sidebar from './components/Sidebar';
 import useFetch from './hooks/useFetch';
 
 const App = () => {
-
   const [after, setAfter] = useState('');
 
   const [selected, setSelected] = useState();
@@ -41,12 +40,12 @@ const App = () => {
         loadMore={loadMore}
         switchTab={switchTab}
       />
-      <Grid
-        data={data}
-        setData={setData}
-        tab={tab}
-      />
-      {loading && <Loader />}
+      <Grid data={data} setData={setData} tab={tab} />
+      {loading && (
+        <div className="toolbar">
+          <Loader theme="dark" />
+        </div>
+      )}
     </main>
   );
 };
