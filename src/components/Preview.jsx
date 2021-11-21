@@ -40,7 +40,14 @@ const Preview = ({
     <div className="preview">
       {loading && <Loader theme="light" />}
       {type === 'video' ? (
-        <video controls autoPlay src={video}></video>
+        <video
+          onLoadStart={() => {
+            setLoading(false);
+          }}
+          controls
+          autoPlay
+          src={video}
+        ></video>
       ) : (
         <img
           style={!loading ? {} : { display: 'none' }}
