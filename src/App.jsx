@@ -1,85 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import Preview from './components/Preview';
 import Loader from './components/Loader';
 import Grid from './components/Grid';
 import { useIndexedDBStore } from 'use-indexeddb';
-import { getMediaType } from './utils';
 import { Tab } from './constants';
 import Sidebar from './components/Sidebar';
+import useFetch from './hooks/useFetch';
 
 const App = () => {
   const store = useIndexedDBStore('favourites');
 
-  const [data, setData] = useState([]);
   const [after, setAfter] = useState('');
 
   const [selected, setSelected] = useState();
   const [openPreview, setOpenPreview] = useState(false);
   const [cur, setCur] = useState(0);
   const [tab, setTab] = useState(Tab.Home);
-  const [loading, setLoading] = useState(false);
 
-  const mapData = data => {
-    return {
-      id: data.id,
-      name: data.name,
-      title: data.title,
-      thumb: data.thumbnail,
-      type: getMediaType(data.url),
-      image: data.url,
-      url: 'https://www.reddit.com' + data.permalink,
-      subreddit: data.subreddit.startsWith('u_')
-        ? 'u/' + data.subreddit.slice(2)
-        : 'r/' + data.subreddit,
-      video: data?.media?.reddit_video?.fallback_url,
-    };
-  };
-
-  useEffect(() => {
-    setLoading(true);
-    if (tab === Tab.Fav) {
-      store
-        .getAll()
-        .then(data => {
-          setData(data);
-          setLoading(false);
-        })
-        .catch(err => {
-          console.error(err);
-          setLoading(false);
-        });
-    } else {
-      if (!selected) return;
-      const qString = selected.startsWith('u/')
-        ? `https://www.reddit.com/user/${selected.slice(
-            2
-          )}/.json?after=${after}`
-        : `https://www.reddit.com/${selected}/.json?after=${after}`;
-      fetch(qString)
-        .then(res => res.json())
-        .then(res => {
-          setData(prev => {
-            return prev[0]?.subreddit?.toLowerCase() === selected?.toLowerCase()
-              ? [
-                  ...prev,
-                  ...Object.values(res.data.children).map(({ data }) =>
-                    mapData(data)
-                  ),
-                ]
-              : Object.values(res.data.children).map(({ data }) =>
-                  mapData(data)
-                );
-          });
-          setLoading(false);
-        })
-        .catch(err => {
-          console.log(err);
-          setLoading(false);
-        });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [after, selected, tab]);
+  const {data, setData, loading} = useFetch({tab, selected, after});
 
   const loadMore = () => setAfter(data[data.length - 1].name);
 
