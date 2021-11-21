@@ -8,8 +8,9 @@ main {
 }
 
 *,
-li {
-  font-family: "Source Code Pro", monospace;
+li,
+select {
+  font-family: 'Source Code Pro', monospace;
 }
 
 ul {
@@ -42,6 +43,10 @@ body {
   align-items: center;
 }
 
+.toolbar {
+  margin-left: 270px;
+}
+
 .grid-container {
   margin-left: 270px;
   display: grid;
@@ -71,7 +76,7 @@ body {
 }
 
 .tag.image {
-  background: #FF7F7F;
+  background: #ff7f7f;
 }
 
 .tag.video {
@@ -79,7 +84,7 @@ body {
 }
 
 .tag.gif {
-  background: #ADD8E6;
+  background: #add8e6;
 }
 
 .sidebar {

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
-import Preview from './components/Preview';
 import Loader from './components/Loader';
 import Grid from './components/Grid';
 import { useIndexedDBStore } from 'use-indexeddb';
@@ -14,11 +13,10 @@ const App = () => {
   const [after, setAfter] = useState('');
 
   const [selected, setSelected] = useState();
-  const [openPreview, setOpenPreview] = useState(false);
-  const [cur, setCur] = useState(0);
+
   const [tab, setTab] = useState(Tab.Home);
 
-  const {data, setData, loading} = useFetch({tab, selected, after});
+  const { data, setData, loading } = useFetch({ tab, selected, after });
 
   const loadMore = () => setAfter(data[data.length - 1].name);
 
@@ -34,11 +32,6 @@ const App = () => {
 
   useHotkeys('alt+w', loadMore, [loadMore]);
   useHotkeys('alt+q', switchTab, [switchTab]);
-
-  const openPreviewHandler = i => {
-    setOpenPreview(true);
-    setCur(i);
-  };
 
   const addFavourite = data => {
     store.add(data).then(console.log);
@@ -66,24 +59,16 @@ const App = () => {
         loadMore={loadMore}
         switchTab={switchTab}
       />
-      {data && (
+      {!!data.length && (
         <Grid
           data={data}
           addFavourite={addFavourite}
           removeFav={removeFav}
-          openPreviewHandler={openPreviewHandler}
           tab={tab}
         />
       )}
       {loading && <Loader />}
-      {openPreview && (
-        <Preview
-          handleClose={() => setOpenPreview(false)}
-          handleRight={() => cur !== data.length - 1 && setCur(cur + 1)}
-          handleLeft={() => cur !== 0 && setCur(cur - 1)}
-          data={data[cur]}
-        />
-      )}
+
     </main>
   );
 };
